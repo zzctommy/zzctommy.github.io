@@ -1,5 +1,5 @@
 ---
-title: 关于
+title: About
 description: 关于这个网站。
 ---
 
