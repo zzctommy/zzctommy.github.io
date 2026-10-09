@@ -1,8 +1,4 @@
 ---
-title: 写给时间的信
-description: 日记、随笔与阅读笔记。
+title: ZZC's Garden
+description: Diary first, maybe more.
 ---
-
-这里是 Tommy 的文字角落，收录日记、随笔和阅读中的片刻。慢慢写，慢慢更新。
-
-第一篇文章即将从这里开始。你也可以先看看[关于这个网站](关于)。
