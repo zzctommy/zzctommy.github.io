@@ -1,3 +1,19 @@
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// A quiet reading surface, with generous spacing for Chinese prose.
+body {
+  font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  line-height: 1.85;
+}
+
+article {
+  font-size: 1.05rem;
+}
+
+article p {
+  margin-block: 1.1rem;
+}
+
+h1, h2, h3, .page-title {
+  letter-spacing: 0.025em;
+}
