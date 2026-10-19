@@ -17,3 +17,8 @@ article p {
 h1, h2, h3, .page-title {
   letter-spacing: 0.025em;
 }
+
+// Keep dates in note listings on one line.
+li.section-li > .section > .meta {
+  white-space: nowrap;
+}
