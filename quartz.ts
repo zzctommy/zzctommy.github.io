@@ -1,7 +1,10 @@
 import { loadQuartzConfig, loadQuartzLayout } from "./quartz/plugins/loader/config-loader"
-import * as ExternalPlugin from "./.quartz/plugins"
+import { componentRegistry } from "./quartz/components/registry"
+import type { ExplorerOptions } from "@quartz-community/explorer"
 
-ExternalPlugin.Explorer({
+// npm plugin overrides must use the same package name as quartz.config.yaml.
+// The generated .quartz/plugins wrapper uses a different key in this version.
+componentRegistry.setOptionOverrides("@quartz-community/explorer", {
   sortFn: (a, b) => {
     if (a.isFolder !== b.isFolder) {
       return a.isFolder ? -1 : 1
@@ -11,13 +14,11 @@ ExternalPlugin.Explorer({
       return (a.displayName ?? "").localeCompare(b.displayName ?? "", "zh-CN")
     }
 
-    return (b.slugSegment ?? "").localeCompare(
-      a.slugSegment ?? "",
-      undefined,
-      { numeric: true },
-    )
+    return (b.slugSegment ?? "").localeCompare(a.slugSegment ?? "", undefined, {
+      numeric: true,
+    })
   },
-})
+} satisfies Partial<ExplorerOptions>)
 
 const config = await loadQuartzConfig()
 export default config
