@@ -30,7 +30,7 @@ title: Statistics读书进度
 
 #### 1.2
 
-引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有： MISE（MSE的推广） $\sup_\limits{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
+引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有： MISE（MSE的推广） $\sup\limits_{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
 
 #### 1.3
 
