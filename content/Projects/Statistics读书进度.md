@@ -26,21 +26,29 @@ title: Statistics读书进度
 
 #### 1.1
 
-非参（参数甚至不可数）统计的典例，例如从函数空间recover probabilistic density。
+非参（无限维模型）统计的典例，例如从函数空间recover probabilistic density。
 
 #### 1.2
 
-引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有： MISE（MSE的推广） $\sup\limits_{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
+引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有：点态MSE $\sup\limits_{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
 
 #### 1.3
 
-通过Fourier transform给出更精确的MISE估计，因为求导在Fourier transform下的简单表示主要考虑Sobolev class，主要结果是：$L^2$ 且对称的kernel，如果 $ess\sup_{t\not=0}\frac{1-\hat{K}(t)}{|t|^{\beta}}\le A$ ，那么 $\sup_{p\in \mathcal{P_s}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
+通过Fourier transform给出更精确的MISE估计，因为求导在Fourier transform下的简单表示主要考虑Sobolev class，主要结果是：$L^2$ 且对称的kernel，如果 $ess\sup_{t\not=0}\frac{1-\hat{K}(t)}{|t|^{\beta}}\le A$ ，那么MISE的上界 $\sup_{p\in \mathcal{P_s}(\beta,L)}\mathbb{E}_p[\int_{\mathbb{R}}(\hat{p_n}(x)-p(x))^2dx]\le C n^{-2\beta/(2\beta+1)}$ 。
 
 #### 1.4
 
-cross-validation首次出现（看了因果推断才懂，不过这里只是构造estimator而不是减少过拟合问题）。目标是寻找恰当的h给出好的estimator。因为 MISE(h)依赖未知density p，这一节给出完全依赖data的unbiased estimator CV(h) of $MISE(h)-\int_\mathbb{R}p^2(x)dx$，所以问题变成最小化CV(h)。另外还有从Fourier transform角度出发构造的另一个 $MISE(h)-\int_\mathbb{R}p^2(x)dx$ 的无偏统计量。
+cross-validation首次出现（看了因果推断才懂，不过这里只是构造estimator而不是减少过拟合问题）。目标是寻找恰当的h给出好的estimator。因为 MISE(h)依赖未知density p，这一节给出完全依赖data的unbiased estimator CV(h) of $MISE(h)-\int_\mathbb{R}p^2(x)dx$，所以问题变成最小化CV(h)：
+$$
+CV(h)=\int \hat{p_h}(x)^2dx-\sum_{i=1}^n\frac{2}{n}\hat{p}_{h,-i}(X_i)
+$$
+
+
+另外还有从Fourier transform角度出发构造的另一个 $MISE(h)-\int_\mathbb{R}p^2(x)dx$ 的无偏统计量。
 
 #### 1.5
+
+两类design。random design：$X_i$ are random variables。fix design：$X_i$  预先给定，例如 $X_i=\frac{i}{n}$ 。
 
 目标是估计回归函数 $f(x)=\mathbb{E}[Y|X=x]$，构造了Nadaraya-Watson estimator $f_n^{NW}(x)=\frac{\sum_i Y_iK((X_i-x)/h)}{\sum_i K((X_i-x)/h)}$(for random design)。fix design没太看懂，没细讲，遇到再说。
 
@@ -56,7 +64,7 @@ $Y_i(W_i)$：outcome，是否康复，$W_i$ 是否接受治疗。
 
 Difference-in-means estimator $\hat{\tau}_{DM}=\frac{1}{n_1}\sum_{W_i=1}Y_i-\frac{1}{n_0}\sum_{W_i=0}Y_i$。
 
-后面拿linear model和nonlinear model的OLS方法（nonlinear用Huber-White）算了example，OLS给出的estimator都小于difference-in-means estimator，所以具体问题中DM往往不是最优的
+后面拿linear model和nonlinear model的OLS方法（nonlinear用Huber-White）算了example，OLS给出的estimator方差都小于difference-in-means estimator，所以具体问题中DM往往不是最优的
 
 #### Lec2
 
@@ -108,6 +116,6 @@ Cross-fitting AIPW：防止过拟合的技术。将数据分组（一般比较�
 $$
 \hat{\tau}_{AIPW}=\frac{1}{n}\sum_{i=1}^n\left(\hat{\mu}_{(1)}^{-k(i)}(X_i)-\hat{\mu}_{(0)}^{-k(i)}(X_i)+W_i\frac{Y_i-\hat{\mu}^{-k(i)}_{(1)}(X_i)}{\hat{e}^{-k(i)}(X_i)}-(1-W_i)\frac{Y_i-\hat{\mu}_{(0)}^{-k(i)}(X_i)}{1-\hat{e}^{-k(i)}(X_i)}\right)
 $$
-$-k(i)$：刨去第 $k(i)$ 组所有的数据学习。（然后把 $k_i$ 组的数据带进去用，有效防止过拟合）。
+$-k(i)$：刨去第 $k(i)$ 组所有的数据学习。（然后把 $k(i)$ 组的数据带进去用，有效防止过拟合）。
 
 在三个基本假设下可得 $\sqrt{n}(\hat{\tau}_{AIPW}-\hat{\tau}_{AIPW}^*)\to_p 0$，并且我们可以给出渐进意义下 $\hat{\tau}_{AIPW}$ 的方差，使得我们可以给出asymptotic confidence interval。
