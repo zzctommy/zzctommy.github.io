@@ -2,7 +2,7 @@
 title: Statistics读书进度
 ---
 
-## 进度
+# 进度
 
 起到一个鞭策自己看书的作用，每天读一点记下来也许有成就感。
 
@@ -18,25 +18,25 @@ title: Statistics读书进度
 
 ------
 
-## 每日总结
+# 每日总结
 
 我意识到应该每节学完之后写一个概括，否则我会迷失在技术细节里。
 
-### Nonparametric Regression
+## Nonparametric Regression
 
-#### 1.1
+### 1.1
 
 非参（无限维模型）统计的典例，例如从函数空间recover probabilistic density。
 
-#### 1.2
+### 1.2
 
 引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有：点态MSE $\sup\limits_{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
 
-#### 1.3
+### 1.3
 
 通过Fourier transform给出更精确的MISE估计，因为求导在Fourier transform下的简单表示主要考虑Sobolev class，主要结果是：$L^2$ 且对称的kernel，如果 $ess\sup_{t\not=0}\frac{|1-\hat{K}(t)|}{|t|^{\beta}}\le A$ ，那么MISE的上界 $\sup_{p\in \mathcal{P_s}(\beta,L)}\mathbb{E}_p[\int_{\mathbb{R}}(\hat{p_n}(x)-p(x))^2dx]\le C n^{-2\beta/(2\beta+1)}$ 。
 
-#### 1.4
+### 1.4
 
 cross-validation首次出现（看了因果推断才懂，不过这里只是构造estimator而不是减少过拟合问题）。目标是寻找恰当的h给出好的estimator。因为 MISE(h)依赖未知density p，这一节给出完全依赖data的unbiased estimator CV(h) of $MISE(h)-\int_\mathbb{R}p^2(x)dx$，所以问题变成最小化CV(h)：
 $$
@@ -46,15 +46,15 @@ $$
 
 另外还有从Fourier transform角度出发构造的另一个 $MISE(h)-\int_\mathbb{R}p^2(x)dx$ 的无偏统计量。
 
-#### 1.5
+### 1.5
 
 两类design。random design：$X_i$ are random variables。fix design：$X_i$  预先给定，例如 $X_i=\frac{i}{n}$ 。
 
 目标是估计回归函数 $f(x)=\mathbb{E}[Y|X=x]$，构造了Nadaraya-Watson estimator $f_n^{NW}(x)=\frac{\sum_i Y_iK((X_i-x)/h)}{\sum_i K((X_i-x)/h)}$(for random design)。fix design没太看懂，没细讲，遇到再说。
 
-### Casual Inference
+## Casual Inference
 
-#### Lec1
+### Lec1
 
 ATE（average treatment effect） $\tau=\mathbb{E}[Y_i(1)-Y_i(0)]$。
 
@@ -66,7 +66,7 @@ Difference-in-means estimator $\hat{\tau}_{DM}=\frac{1}{n_1}\sum_{W_i=1}Y_i-\fra
 
 后面拿linear model和nonlinear model的OLS方法（nonlinear用Huber-White）算了example，OLS给出的estimator方差都小于difference-in-means estimator，所以具体问题中DM往往不是最优的
 
-#### Lec2
+### Lec2
 
 整体比较会丢失因果，因此通过加入协变量 $X_i$ 给被试者分组，探测协变量带来的因果。
 
@@ -90,7 +90,7 @@ oracle IPW：$\hat{\tau}_{IPW}^*=\frac{1}{n}\sum_i \frac{W_iY_i}{e(X_i)}-\frac{(
 
 协变量离散的时候 $\hat{\tau}_{AGG}$ 比 $\hat{\tau}_{IPW}^*$ 精确（方差更小，因为AGG使用的是精确的每组人数，IPW使用的是估计每组人数）。但是由于IPW更“抽象”，只需要考虑propensity score的性质而不需要准确的每组人数，所以更加可以研究。
 
-#### Lec3
+### Lec3
 
 notations：$\mu_{(w)}(x)=\mathbb{E}[Y_i(w)|X_i=x],\sigma^2_w(x)=Var[Y_i(w)|X_i=x]$。
 
