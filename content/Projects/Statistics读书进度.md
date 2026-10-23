@@ -34,7 +34,7 @@ title: Statistics读书进度
 
 #### 1.3
 
-通过Fourier transform给出更精确的MISE估计，因为求导在Fourier transform下的简单表示主要考虑Sobolev class，主要结果是：$L^2$ 且对称的kernel，如果 $ess\sup_{t\not=0}\frac{1-\hat{K}(t)}{|t|^{\beta}}\le A$ ，那么MISE的上界 $\sup_{p\in \mathcal{P_s}(\beta,L)}\mathbb{E}_p[\int_{\mathbb{R}}(\hat{p_n}(x)-p(x))^2dx]\le C n^{-2\beta/(2\beta+1)}$ 。
+通过Fourier transform给出更精确的MISE估计，因为求导在Fourier transform下的简单表示主要考虑Sobolev class，主要结果是：$L^2$ 且对称的kernel，如果 $ess\sup_{t\not=0}\frac{|1-\hat{K}(t)|}{|t|^{\beta}}\le A$ ，那么MISE的上界 $\sup_{p\in \mathcal{P_s}(\beta,L)}\mathbb{E}_p[\int_{\mathbb{R}}(\hat{p_n}(x)-p(x))^2dx]\le C n^{-2\beta/(2\beta+1)}$ 。
 
 #### 1.4
 
@@ -80,15 +80,15 @@ propensity score：$e(x)=\mathbb{P}[W_i=1\big|X_i=x]$。
 
 在unconfoundedness成立的条件下，$\{Y_i(0),Y_i(1)\}\perp W_i\big|e(X_i)$。
 
-Propensity stratification：按照propensity score的大小分为若干组，并把每一组的propensity score平均化处理成一样的，跑DM estimate，通过平衡组的个数（组越多对每一组propensity score的估计就越准；组越少每一组的数据就越多，DM estimate更准）来构造estimator。
+Propensity stratification：按照propensity score的大小分为若干组，每一组跑DM estimate，通过平衡组的个数（组越多对每一组propensity score差别越小，DM越准；组太多每一组数据太少，样本不足带来大误差）来构造estimator。
 
 IPW（inverse propensity weighting）$\hat{\tau}_{IPW}=\frac{1}{n}\sum_i \frac{W_iY_i}{\hat{e}(X_i)}-\frac{(1-W_i)Y_i}{1-\hat{e}(X_i)}$ （$\hat{e}$ 用非参回归计算）
 
 oracle IPW：$\hat{\tau}_{IPW}^*=\frac{1}{n}\sum_i \frac{W_iY_i}{e(X_i)}-\frac{(1-W_i)Y_i}{1-e(X_i)}$
 
-在unconfoundedness下，$\hat{\tau}_{IPW}$ 是ATE的unbiased estiamtor，$\frac{1}{\sqrt{n}}$ rate逼近 $\tau$。
+在unconfoundedness下，$\hat{\tau}^*_{IPW}$ 是ATE的unbiased estiamtor，$\frac{1}{\sqrt{n}}$ rate逼近 $\tau$。
 
-协变量离散的时候 $\hat{\tau}_{AGG}$ 比 $\hat{\tau}_{IPW}^*$ 精确（方差更小）。但是由于IPW更“抽象”，只需要考虑propensity score的性质，所以更加可以研究。
+协变量离散的时候 $\hat{\tau}_{AGG}$ 比 $\hat{\tau}_{IPW}^*$ 精确（方差更小，因为AGG使用的是精确的每组人数，IPW使用的是估计每组人数）。但是由于IPW更“抽象”，只需要考虑propensity score的性质而不需要准确的每组人数，所以更加可以研究。
 
 #### Lec3
 
@@ -108,9 +108,9 @@ $$
 $$
 strong robust：
 $$
-|\hat{\tau}_{AIPW}-\hat{\tau}_{AIPW}^*|=\mathcal{O}_p\left(\max_{w}\mathbb{E}[(\hat{\mu}_{(w)}(X_i)-\mu_{(w)}(X_i))^2]^{1/2}\mathbb{E}[(\hat{e}(X_i)-e(X_i))^2]^{1/2} \right)
+|\hat{\tau}_{AIPW}-\hat{\tau}_{AIPW}^*|=\mathcal{O}_p\left(\max_{w}\mathbb{E}[(\hat{\mu}_{(w)}(X_i)-\mu_{(w)}(X_i))^2]^{1/2}\mathbb{E}[(\hat{e}(X_i)-e(X_i))^2]^{1/2} \right)+\color{red}{o_p(n^{-1/2})}
 $$
-也就是 $\mu,e$ 有一个估计的特别好，那么就可以弥补另一个估计。
+（红色：AI指出讲义应该加上余项）也就是 $\mu,e$ 有一个估计的特别好，那么就可以弥补另一个估计。
 
 Cross-fitting AIPW：防止过拟合的技术。将数据分组（一般比较少），$k:\{1,...,n\}\to\text{组别}$。
 $$
