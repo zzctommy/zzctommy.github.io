@@ -63,7 +63,7 @@ $$
 \hat{\theta}_n(x)=\arg\min_{\theta\in \mathbb{R}^{n+1}} \sum_{i=1}^n (Y_i-\theta^TU(\frac{X_i-x}{h}))^2K(\frac{X_i-x}{h})\in \mathbb{R}^{l+1}\\
 \hat{f_n}(x)=U^T(0)\hat{\theta}_n(x)
 $$
-这么写的动机是，在局部想象 $f$ 是 $l$ 阶 Taolor 多项式，对系数做线性回归。乘以 $K$ 保证只用到局部的数据。但是为什么这真的可能是一个estimator，可以证明：如果f局部上是 $l$ 次多项式，并且线性回归矩阵  $B_{nx}$ 可逆，那么 $f(x)=\hat{f_n}(x)$。
+这么写的动机是，在局部想象 $f$ 是 $l$ 阶 Taolor 多项式，对系数做线性回归。乘以 $K$ 保证只用到局部的数据。但是为什么这真的可能是一个estimator，可以证明：如果f局部上是 $l$ 次多项式，并且线性回归矩阵  $B_{nx}$ 可逆，那么 $f(x)=\hat{f_n}(x)$。特别的，$LP(0)$ estimator 就是 Nadatraya-Watson estimator.
 
 以下研究这个estimator的性质。
 
@@ -114,7 +114,7 @@ Then estimator  $\hat{f_n}$ satisfies the same conclusion as the previous theore
 
 我们还可以研究 $L^{\infty}$-risk of $\hat{f_n}$ ：$\mathbb{E}_f[||\hat{f_n}-f||_{L^\infty}^2]$ 的收敛速度。
 
-**定理（$L^{\infty}$-risk 收敛速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. Assume
+**定理（$L^{\infty}$-risk 一致收敛速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. Assume
 
 + $h=h_n=\alpha(\frac{\log n}{n})^{\frac{1}{2\beta+1}}$。
 + design points $X_1,\cdots,X_n$ are deterministic
