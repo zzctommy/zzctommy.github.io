@@ -118,3 +118,70 @@ $$
 $-k(i)$：刨去第 $k(i)$ 组所有的数据学习。（然后把 $k(i)$ 组的数据带进去用，有效防止过拟合）。
 
 在三个基本假设下可得 $\sqrt{n}(\hat{\tau}_{AIPW}-\hat{\tau}_{AIPW}^*)\to_p 0$，并且我们可以给出渐进意义下 $\hat{\tau}_{AIPW}$ 的方差，使得我们可以给出asymptotic confidence interval。
+
+### Lec4
+
+Statistics setting：observed iid $(X_i,Y_i,W_i)$，$X_i\in \chi$ personal features.
+
+CATE: $\tau(x)=\mathbb{E}[Y_i(1)-Y_i(0)|X_i=x]$，i.e. ATE over a target group.
+
+现在人们想要估计 $\tau(x)$，这有明确的动机，例如我们想知道某个药对不同人群的副作用程度。
+
+一个直接方法是非参回归估计 $\mu_{(w)}(x)=\mathbb{E}[Y_i|X_i=x,W_i=w]$ 得到 $\hat{\mu}_{(w)}(x)$，得到回归估计 $\hat{\tau}_T(x)=\hat{\mu}_{(1)}(x)-\hat{\mu}_{(0)}(x)$。
+
+这个估计有两个问题，一是（在观察性研究中）如果对照组和实验组人数差距过大，会有一个estimator相比另一个estimator非常不准，从而会导致误判因果（例如真实值是0.8，0.2，学得好的直接学出了0.2，学得差的学出了一个0.8附近波动的函数，于是在波峰波谷等位置人们会认为有因果，但实际没有）。二是，如果 $W_i=0,1$ 的数据的组别差异很大，也就是集中在不同的 $X_i$，那么在每一个组的对照组实验组人数差距都很大都会出现上面引起的因果假象。
+
+Semiparametric modeling：$Y_i(w)=f(X_i)+w\tau(X_i)+\epsilon_i(w)$，where $\tau(x)=\psi(x)\cdot \beta, \beta\in \mathbb{R}^k$。也就是人们已经有了一些 $\tau(x)$ 的候选模型，认为这部分是线性的。
+
+Robinson研究过这类问题。在unconfoundedness下可以重写模型为
+$$
+Y_i-m(X_i)=(W_i-e(X_i))\psi(X_i)\cdot \beta+\epsilon_i\\
+\text{where}\  m(x)=\mathbb{E}[Y_i\big|X_i=x]=f(X_i)+e(X_i)\tau(X_i)
+$$
+这给出估计 $\beta$ 的oracle algorithm：$\tilde{Y}_i^*=Y_i-m(X_i),\tilde{Z}_i^*=(W-e(X_i))\psi(X_i)$，estimator
+$$
+\hat{\zeta}_R^*=arg\min_{b\in \mathbb{R}^k}(\sum_{i=1}^n\tilde{Y}_i^*-(\tilde{Z}_i^*)^Tb)^2
+$$
+可以证明 $\sqrt{n}(\hat{\zeta}_R^*-\beta)\Rightarrow \mathcal{N}(0,V_R)$ where $V_R=Var[\hat{Z}_i^*]^{-1}Var[\tilde{Z}_i^*\tilde{Y}_i^*]Var[\hat{Z}_i^*]^{-1}$。
+
+实操的时候我们用cross-fitting：
+
+1. 非参回归 $Y\sim X,W\sim X$ 得到 $\hat{m}(x), \hat{e}(x)$。
+
+2. 定义 $\tilde{Y}_i=Y_i-\hat{m}^{(-k(i))}(X_i),\tilde{Z}_i=(W_i-\hat{e}^{-(k(i))}(X_i))\psi(X_i)$。
+
+3. OLS回归 $\tilde{Y}_i\sim \tilde{Z}_i$ 得到 $\hat{\zeta}_R$。
+
+可以证明如果m和e的非参回归的MSE都是 $o_p(n^{-1/2})$ 的，那么 $\sqrt{n}(\hat{\zeta}_R^*-\hat{\zeta}_R)\to_p 0$，此时 $\hat{\zeta}_R$ 也有上面的渐进正态。
+
+但是在复杂的covariate环境下，我们更希望机器自己学习CATE而不是我们预设 $\psi$。
+
+模型写成 $Y_i(w)=\mu_{(0)}(X_i)+w\tau(X_i)+\epsilon_i(w)$，在unconfoundedness下 $\mathbb{E}[\epsilon_i\big|X_i,W_i]=0$。
+
+重写为 $Y_i-m(X_i)=(W_i-e(X_i))\tau(X_i)+\epsilon_i$。
+
+注意到 $\tau(X_i)=arg\min_{\tau'}\mathbb{E}[((Y_i-m(X_i))-(W_i-e(X_i))\tau'(X_i))^2]$。
+
+所以定义empirical loss function
+$$
+\hat{\tau}_R^*(\cdot)=arg\min_{\tau'}\frac{1}{n}\sum_{i=1}^n ((Y_i-m(X_i))-(W_i-e(X_i))\tau'(X_i))^2+\Lambda_n(\tau'(\cdot))
+$$
+其中 $\Lambda_n$ 是给候选函数复杂度增加的惩罚（Lasso的思想）。
+
+实操的时候依旧cross-fitting
+$$
+\hat{\tau}_R(\cdot)=arg\min_{\tau} \hat{L}_n(\tau(\cdot))+\Lambda(\tau(\cdot))\\
+\text{where}\ \hat{L}_n(\tau(\cdot))=\frac{1}{n}\sum_{i=1}^n[(Y_i-\hat{m}^{(-k(i))}(X_i))-(W_i-\hat{e}^{(-k(i))}(X_i))\tau(X_i)]^2
+$$
+$\hat{L}_n$ 被称为 R-loss。
+
+Now we can say something on "treatment heterogeneity"
+
+1. 比较候选模型准确性：在训练数据上得到若干候选模型（例如不同惩罚强度的lasso），在验证集（未参与训练）上对每个候选模型算 R-loss，认为loss越小越准确。
+2. 检查模型是否具有区分heterogeneity的能力：先估计 $\hat{\tau}(x)$，按 $\hat{\tau}(x)$ 的大小分组（stratification），每一组用上一讲的robust方法计算 $\hat{\tau}_{AIPW}(x)$。例如，for simplicity只有H（high）和L（low）两组，其中 $G_H=\{x:\tau(x)>c\},G_L=\{x:\tau(x)\le c\}$，Hypothesis：$\tau_H-\tau_L>0$。在每一组内分别跑AIPW，可以算出 $\hat{\tau}_H-\hat{\tau}_L$ 的渐进正态得到CI，观察CI是否包含0得到结论。
+3. 衡量模型准确性：训练出 $\hat{\tau}(x)$ 之后，考虑半参数模型 $\tau(x)\approx \alpha+\beta\hat{\tau}(x)$ ，run Robinsin method。
+   + $\hat{\beta}\approx 1$ 说明 $\hat{\tau}$ nice
+   + $\hat{\beta}$ 显著大于 $0$ ：$\hat{\tau}$ 含真实信号，不是“pure noise”
+   + $0<\hat{\beta}<1$：$\hat{\tau}$ 需要缩小，训练得到的模型高估了差异
+   + $\hat{\beta}>1$：$\hat{\tau}$ 需要放大，训练得到的模型低估了差异
+
