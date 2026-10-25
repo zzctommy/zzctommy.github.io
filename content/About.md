@@ -5,7 +5,7 @@ description: 关于这个网站。
 
 我是一名清华大学2024级的本科生，数学专业。
 
-contact me: zhengzc24 (at) mails.tsinghua.edu.cn
+contact me: 2633783633 (at) qq.com
 
 兴趣：
 
