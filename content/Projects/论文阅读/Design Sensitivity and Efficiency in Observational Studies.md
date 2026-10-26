@@ -80,7 +80,7 @@ $T$ 的null distribution是未知的，用已知的 $\bar{T},\bar{\bar{T}}$ 去�
 
 #### 2.4 Sensitivity Analysis in the Benzene Example
 
-检验 $H_0:$ 苯对人的基因没有损伤。计算单侧p-value的上界尝试否定 $H_0$：$\mathbb{P}[\bar{T}_{\Gamma}\ge T|\mathcal{F},\mathcal{Z}]$, $T$ 由数据以及选择的权重直接算出来。
+检验 $H_0:$ 苯对人的基因没有损伤。计算单侧p-value的上界尝试否定 $H_0$：$\mathbb{P}[\bar{\bar{T}}_{\Gamma}\ge T|\mathcal{F},\mathcal{Z}]$, $T$ 由数据以及选择的权重直接算出来。
 
 然后作者算了若干不同统计方法在不同 $\Gamma$ 下给出的 p-value，发现不同的方法 p=0.05的 $\Gamma$ 各不相同，每种统计量都会报告一个敏感界 $\Gamma$，作者想研究如何选择统计方法。
 
@@ -90,9 +90,9 @@ $T$ 的null distribution是未知的，用已知的 $\bar{T},\bar{\bar{T}}$ 去�
 
 定义power需要先给定数据（$\mathcal{F},\mathbf{Z}$）的生成方式。在观察性研究中，哪怕covariates已经做到unconfoundedness了，我们也不可能断定这一点，因此最好的结论是unconfoundedness下可以得出可以抵御一定程度的隐藏偏差。
 
-有利情形（一种数据生成方式）：$Z_{i1}-Z_{i2}=\pm 1$ with probability $1/2$, $\mathcal{F}$ 按照某个模型生成，且additive：$\tau\equiv r_{Tij}-t_{Cij}$. 再加上其他一些条件。
+有利情形（一种数据生成方式）：$Z_{i1}-Z_{i2}=\pm 1$ with probability $1/2$, $\mathcal{F}$ 按照某个模型生成，且additive：$\tau\equiv r_{Tij}-r_{Cij}$. 再加上其他一些条件。
 
-定义power $\mathbb{P}[\bar{p}_{\Gamma}\le \alpha|\text{有利情形},H_0]$（$\bar{p}_{\Gamma}$：给定 $\Gamma$ 下最坏的 p-value，也就是 $R$ 更高的人总是以最高概率 $\frac{\Gamma}{1+\Gamma}$ 被处理时，p-value）
+定义power $\mathbb{P}[\bar{p}_{\Gamma}\le \alpha|\text{有利情形},H_0]$（$\bar{p}_{\Gamma}$：给定 $\Gamma$ 下最坏的 p-value，也就是 $R$ 更高的人总是以最高概率 $\frac{\Gamma}{1+\Gamma}$ 被处理时的p-value）
 
 在确定的统计量和有利情形下，定义 $\tilde{\Gamma}$ 使得在 $I\to\infty$ 时，如果 $\Gamma<\tilde{\Gamma}$ 就有 power $\to 1$ ；如果 $\Gamma>\tilde{\Gamma}$ 就有 power $\to 0$.（存在性暂时未知）
 
@@ -102,15 +102,95 @@ $T$ 的null distribution是未知的，用已知的 $\bar{T},\bar{\bar{T}}$ 去�
 
 如果 $H_0$ 是对的，给定 $\Gamma$ 能否用未观测偏差 来解释 得到的结果？强度为 $\Gamma$ 的未观测偏差在 $H_0$ 下至多把出现正 $Y_i$ 的概率推高到 $\frac{\Gamma}{1+\Gamma}$。设RCT下 $Y_i$ 的density为 $g(\cdot)$，定义 $\operatorname{abz}(y)=\frac{g(y)}{g(y)+g(-y)}$，也就是给定 $|y|$ 的时候取正号的概率。如果这个值比 $\frac{\Gamma}{1+\Gamma}$ 大，那么就不是强度 $\Gamma$ 的未观测偏差能解释的了，因而这部分数据是非常重要的，需要调节权重使他们突出出来。
 
-作者计算了若干种分布的 abz（$Y_i=\frac{3}{4}+\epsilon_i$, $\epsilon_i$ 的分布人为给定），有一些会先增后降，所以并非越大的 $|Y_i|$ 配越大的权重是一个好策略，定量分析在下一节。
+作者计算了若干种分布的 abz（$Y_i=\frac{3}{4}+\epsilon_i$, $\epsilon_i$ 的分布人为给定），有一些会先增后降（但是无一例外在 $Y_i$ 非常小的时候都是小的），所以并非越大的 $|Y_i|$ 配越大的权重是一个好策略，定量分析在下一节。
 
 ### 4 DESIGN SENSITIVITY AND EFFICIENCY
 
+#### 4.1 A Formula for the Design Sensitivity With General Scores
 
+我们给已经定义的变量加下标 $I$ 表示根据已有的 $I$ 对数据计算得到。
 
+定义 score function $\varphi(\cdot)$ 是 simple 的，如果 (i) $\varphi:[0,1]\to[0,\infty)$; (ii) $\varphi$ piecewise continuous and right-continuous, i.e. exists $0=\xi_0<\xi_1<\cdots<\xi_A=1$ s.t. $\varphi$ continuous at $[\xi_{i-1},\xi_{i}),i\le A-1$ and $[\xi_{A-1},1]$； (iii) 非严格递增; (iv) 不恒为零。
 
+Fix $\alpha=0.05$, write $\Phi$ for standard normal cdf. Define
+$$
+c_{\Gamma,I}=\frac{\Gamma}{1+\Gamma}\sum_{i=1}^I s_i\varphi(q_{i,I})+\Phi^{-1}(1-\alpha)\sqrt{\frac{\Gamma}{(1+\Gamma)^2}\sum_{i=1}^I s_i\varphi(q_i)^2}
+$$
+**Proposition**: If $Y_i,i=1,\cdots,I$ are iid with continuous density $G(\cdot)$. $\varphi(\cdot)$ is a simple score function. Then for a.s. $\mathcal{F}_I$ as $I\to \infty$ we have
+$$
+\mathbb{P}[\bar{\bar{T}}_{\Gamma,I}\ge c_{\Gamma,I}|\mathcal{F}_I,\mathcal{Z}_I]\to \alpha\\
+\mathbb{P}[T_{I}\ge c_{\Gamma,I}|\mathcal{F}_I,\mathcal{Z}_I]\to 1\qquad \text{if}\ \Gamma<\tilde{\Gamma}\\
+\mathbb{P}[T_{I}\ge c_{\Gamma,I}|\mathcal{F}_I,\mathcal{Z}_I]\to 0\qquad \text{if}\ \Gamma>\tilde{\Gamma}\\
+$$
+where 
 
+$$
+\tilde{\Gamma}=\frac{\int_0^\infty \varphi(G(y)-G(-y)) dG(y)}{\int_0^1 \varphi(y)dy-\int_0^\infty \varphi(G(y)-G(-y))dG(y)}
+$$
 
+pf: 连续的density导致我们可以只考虑 $|Y_i|$ 互不相同的情况（不影响a.s.性）
+
+从而有 $\sum_{i=1}^I s_i\varphi(q_{i,I})=\sum_{i=1}^I\varphi(i/(I+1))$ 和 $\sum_{i=1}^I s_i\varphi(q_{i,I})^2=\sum_{i=1}^I\varphi(i/(I+1))^2$.
+
+由$\varphi$ simple的假设每一个求和都是 $O(I)$ 的阶（无界）。
+
+$\bar{\bar{T}}$ 是 $I$ 个独立随机变量的和，每一个有 $\frac{\Gamma}{1+\Gamma}$ 的概率是 $\varphi(i/(I+1))$，$\frac{1}{1+\Gamma}$ 概率是 $0$。
+
+计算mean和var就可以得到 $\mathbb{P}[\bar{\bar{T}}_{\Gamma,I}\ge c_{\Gamma,I}|\mathcal{F}_I,\mathcal{Z}_I]\to \alpha$.
+
+Now consider 
+$$
+D_I=\frac{\frac{1}{I}T_I-\frac{1}{I}\frac{\Gamma}{1+\Gamma}\sum_{i=1}^I s_i\varphi(q_{i,I})}{\sqrt{\frac{\Gamma}{I^2(1+\Gamma)^2}\sum_{i=1}^I s_i\varphi(q_{i,I})^2}}
+$$
+note $T_I\ge c_{\Gamma,I}$ is equivalent to $D_I\ge\Phi(1-\alpha)$.
+
+denominator of $D_I$ is $O(1/\sqrt{I})$ tends to $0$.
+
+the second term in numerator tends to $\frac{\Gamma}{1+\Gamma}\int_0^1 \varphi(x)dx$. 
+
+the first term in numerator
+$$
+\frac{T_I}{I}=\frac{1}{I}\sum_{i=1}^Isgn(Y_i)\varphi(q_{i,I})\to\int_0^\infty \varphi(G(y)-G(-y))dG(y)
+$$
+直观上，$G(y)-G(-y)=\mathbb{P}[|Y_i|\le y]$. 在 $[0,\infty)$ 上积 $dG$ 意为 $Y_i>0$. $\varphi$ 的间断点由于有限会被忽略。
+
+所以numerator of $D_I$ 的正负性决定了 $D_I$ 的极限 $\pm \infty$，反解临界情形得到 $\tilde{\Gamma}$.
+
+#### 4.2 Design Sensitivities of Several Statistics
+
+作者计算了Table3，其中Pitman ARE指的是两个检验 $A,B$ 要达到相同power需要的样本量比值：$H_0:\lambda=0$. 当真实的 $\lambda>0$ 时要达到power $\alpha$ 需要的样本量记为 $n_A(\lambda),n_B(\lambda)$. $ARE(A,B)=\lim_{\lambda\to 0}\frac{n_A(\lambda)}{n_B(\lambda)}$.一般认为ARE小于1意味着相同样本量下 $A$ 的power更大。
+
+表格里 $B$ 恒为Wilcoxon。
+
+其他的量我都见过。
+
+结论有：
+
++ Wilcoxon的 $\tilde{\Gamma}$ 最小，敏感度最高。
++ 损失很少的 Pitman ARE可以大幅提高 $\tilde{\Gamma}$.
++ 降低 $\operatorname{abz}(y)$ 小的部分的权重可以提高 $\tilde{\Gamma}$.
++ 如果样本无限多，那么应该只考虑 $\operatorname{abz}$ 最大的部分，但是实际样本有限，不能只考虑很窄的一段区域，引出下一节的有限样本分析。
+
+#### 4.3 Simulated Power of a Sensitivity Analysis
+
+Table4,5算的是有限样本下，用 $Y_i=\tau+\epsilon_i$ 生成数据（$\tau\not=0$, 也就是 $H_1$） 敏感性分析拒绝 $H_0$ 的概率（power的定义）。
+
+结论有：
+
++ Table3,4,5一起看会发现，每一种情形中存在Pitman ARE相近的统计量，$\tilde{\Gamma}$ 不相同，而且 $\tilde{\Gamma}$ 的大小顺序的确给出了power的顺序，所以 $\tilde{\Gamma}$ 某种意义上比 Pitman ARE更能反映power。因此可以恰当选择统计量来同时拥有高Pitman ARE和高power。$\color{red}\text{并没有告诉人们怎么选统计量。}$
++ 应当避免给 $\operatorname{abz}$ 小的 $Y_i$ 太多的权重，会降低敏感性分析的power。
++ 大的 $Y_i$ 是否有用要根据abz选，但是实际操作时并不知道分布，abz不能预先知道，作者在本文没有给出解决方法，引用了他的一篇文章，方向是从所有数据中分出一小部分来指导其余部分的选择。
+
+### 5. DISCUSSION
+
+1. 讨论的起点是认真考虑非随机化分配带来的偏差，形式化其对因果的影响。
+2. 研究者可以自由选择权重来达到目标
+3. 不必局限于 rank statistics $T$。说是有个什么 Huber-M statistics，我不知道是什么。
+4. 不必局限于 $\tau$ 恒为常数。另一个有趣的情形是只有少部分被处理的人有强烈反应而其他人都没有变化。
+
+### 6. SUMMARY
+
+假设unconfoundedness在观察性研究中是不安全的，除去假设unconfoundedness的分析应该加入敏感性分析。$\tilde{\Gamma}$ 在很多统计量上可以比Pitman ARE给出更好的与敏感性分析power的关系，尽管二者都是与power有关的。
 
 
 
