@@ -66,7 +66,7 @@ $$
 \mathbb{P}[Z_{ij}=1|\mathcal{F},\mathcal{Z}]=\exp(\gamma u_{ij})/(\exp(\gamma u_{i1})+\exp(\gamma u_{i2}))\in [\frac{1}{1+\Gamma},\frac{\Gamma}{1+\Gamma}]
 $$
 
-每次给一个 $\Gamma$ 我们可以去算结果的 $p$-value，如果 $p$-value很小就说明在偏差 $\Gamma$ 下的unmeasured covariates并不能影响结论（结论对隐藏协变量的敏感程度）
+每次给一个 $\Gamma$ 我们可以去算假设检验的 $p$-value，如果 $p$-value很小就说明在偏差 $\Gamma$ 下的unmeasured covariates并不能影响结论（结论对隐藏协变量的敏感程度）
 
 定义 $\bar{\bar{T}}_{\Gamma}=\sum_{i}sgn(Y_i)\cdot\begin{cases}\varphi(q_i), s_i=1, probability \frac{\Gamma}{1+\Gamma}\\ 0, s_i=1,probability \frac{1}{1+\Gamma}\\ 0, s_0=0\end{cases}$
 
@@ -84,7 +84,7 @@ $T$ 的null distribution是未知的，用已知的 $\bar{T},\bar{\bar{T}}$ 去�
 
 然后作者算了若干不同统计方法在不同 $\Gamma$ 下给出的 p-value，发现不同的方法 p=0.05的 $\Gamma$ 各不相同，每种统计量都会报告一个敏感界 $\Gamma$，作者想研究如何选择统计方法。
 
-**作者指出，有一些统计量给较小的 $|Y_i|$ 赋予了  $0$ 权，例如 Brown 统计量  $\varphi([0,\frac{1}{3}])=0,\varphi([(\frac{1}{3},\frac{2}{3}])=1,\varphi((\frac{2}{3},1])=2$，可以抵御更大的隐藏偏差。 **
+作者指出，有一些统计量给较小的 $|Y_i|$ 赋予了  $0$ 权，例如 Brown 统计量  $\varphi([0,\frac{1}{3}))=0,\varphi([\frac{1}{3},\frac{2}{3}))=1,\varphi([\frac{2}{3},1])=2$，可以抵御更大的隐藏偏差。 
 
 #### 2.5 The Power of a Sensitivity Analysis and  Design Sensitivity
 
