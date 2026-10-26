@@ -177,7 +177,7 @@ Table4,5算的是有限样本下，用 $Y_i=\tau+\epsilon_i$ 生成数据（$\ta
 
 结论有：
 
-+ Table3,4,5一起看会发现，每一种情形中存在Pitman ARE相近的统计量，$\tilde{\Gamma}$ 不相同，而且 $\tilde{\Gamma}$ 的大小顺序的确给出了power的顺序，所以 $\tilde{\Gamma}$ 某种意义上比 Pitman ARE更能反映power。因此可以恰当选择统计量来同时拥有高Pitman ARE和高power。$\color{red}\text{并没有告诉人们怎么选统计量。}$
++ Table3,4,5一起看会发现，每一种情形中存在Pitman ARE相近的统计量，$\tilde{\Gamma}$ 不相同，而且 $\tilde{\Gamma}$ 的大小顺序的确给出了power的顺序，所以 $\tilde{\Gamma}$ 某种意义上比 Pitman ARE更能反映power。因此可以恰当选择统计量来同时拥有高Pitman ARE和高power。
 + 应当避免给 $\operatorname{abz}$ 小的 $Y_i$ 太多的权重，会降低敏感性分析的power。
 + 大的 $Y_i$ 是否有用要根据abz选，但是实际操作时并不知道分布，abz不能预先知道，作者在本文没有给出解决方法，引用了他的一篇文章，方向是从所有数据中分出一小部分来指导其余部分的选择。
 
