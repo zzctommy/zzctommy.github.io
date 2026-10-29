@@ -71,7 +71,7 @@ $$
 
 那么 $\hat{\theta}_n(x)=\arg\min_{\theta\in\mathbb{R}^{l+1}} -2\theta^T a_{nx}+\theta^T B_{nx}\theta$，可以得到正规方程 $B_{nx}\hat{\theta}_n(x)=a_{nx}$。
 
-我们关心的情况：$K>=0$，保证 $B_{nx}$ 半正定；进一步假设 $B_{nx}$ 正定，可以得到唯一解 $\hat{\theta}_n=B_{nx}^{-1}a_{nx}$。
+我们关心的情况：$K\ge 0$，保证 $B_{nx}$ 半正定；进一步假设 $B_{nx}$ 正定，可以得到唯一解 $\hat{\theta}_n=B_{nx}^{-1}a_{nx}$。
 
 在此情况下 $\hat{f}_n$ 是 $f$ 的linear estimator：$\hat{f_n}(x)=\sum_{i=1}^n Y_i W_{ni}^*(x)$，其中
 $$
@@ -82,45 +82,18 @@ $$
 MSE(x_0):=\mathbb{E}_f[(\hat{f_n}(x_0)-f(x_0))^2]=b(x_0)^2+\sigma^2(x_0)\\
 \text{where}\ b(x_0)=\mathbb{E}_f[\hat{f_n}(x_0)]-f(x_0),\sigma^2(x_0)=Var_f[\hat{f_n}(x_0)]
 $$
-Three important assumptions:
+**定理（点态MSE一致趋于0的速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. 一些条件下
 
-+ (LP1)严格正性：存在 $\lambda_0>0,n_0\in\mathbb{Z}_+$ 使得 $||B_{nx}||\ge \lambda_0,\forall n\ge n_0$。
-+ (LP2)均布性：存在 $a_0>0$ 使得任意区间 $A\subseteq [0,1]$ 都有 $\frac{1}{n}\sum_{i=1}^n I(X_i\in A)\le a_0\max\{Leb(A),\frac{1}{n}\}$。
-+ (LP3)好的kernel：$\operatorname{supp} K\subseteq [-1,1]$ 且存在 $K_{max}<\infty$ 使得 $|K(u)|\le K_{max}, \forall u$。
-
-**定理（点态MSE一致趋于0的速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. Assume
-
-+ design points $X_1,\cdots,X_n$ are deterministic
-+ (LP1),(LP2),(LP3) holds
-+ $\xi_i$ are independent, $\mathbb{E}[\xi_i]=0, Var[\xi_i]\le \sigma^2_{max}<\infty$ 
-
- Then for all $x_0\in [0,1],n\ge n_0,h\ge 1/(2n)$ we have $|b(x_0)|\le q_1 h^\beta,\sigma^2(x_0)\le \frac{q_2}{nh}$.
-
-Hence if we choose $h=h_n=\alpha n^{-\frac{1}{2\beta+1}}$ and $\psi_n=n^{-\frac{1}{2\beta+1}}$, we have constant $C=C(\beta,L,\lambda_0,a_0,\sigma^2_{max},K_{max},\alpha)$ s.t. 
+Choose $\psi_n=n^{-\frac{\beta}{2\beta+1}}$, we have
 $$
 \limsup_{n\to\infty} \sup_{f\in \Sigma(\beta,L)}\sup_{x_0\in [0,1]}\mathbb{E}_f[\psi_n^{-2}|\hat{f_n}(x_0)-f(x_0)|^2]\le C<\infty\\
 \limsup_{n\to\infty} \sup_{f\in \Sigma(\beta,L)}\mathbb{E}_f[\psi_n^{-2}||\hat{f_n}(x_0)-f(x_0)||_{L^2}^2]\le C<\infty
 $$
-在 fixed design $X_i=\frac{i}{n}$ 时 (LP1) 的判据：如果 $\exist K_{min}>0,\Delta>0$ s.t. $K(u)\ge K_{min}I(|u|\le \Delta),\forall u\in \mathbb{R}$。如果还有 $X_i=\frac{i}{n}$，$h=h_n$ s.t. $h_n\to 0, nh_n\to \infty$。那么 (LP1) 成立。同时注意这种 $X_i$ 满足 (LP2)
-
-**定理（均布 $X_i$ 的MSE一致收敛速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. Assume
-
-+ $X_i=\frac{i}{n}, i=1,2,\cdots,n$
-+ $\xi_i$ are independent, $\mathbb{E}[\xi_i]=0, Var[\xi_i]\le \sigma^2_{max}<\infty$ 
-+ $\exists K_{min}>0, \Delta>0,K_{max}<\infty$ s.t. $K_{min}I(|u|\le \Delta)\le K(u)\le K_{max}I(|u|\le 1)$。
-+ $h=h_n=\alpha n^{-\frac{1}{2\beta+1}}$。
-
-Then estimator  $\hat{f_n}$ satisfies the same conclusion as the previous theorem.
+在 fixed design $X_i=\frac{i}{n}$ 时条件可以有简单刻画： $\exist K_{min}>0,\Delta>0$ s.t. $K(u)\ge K_{min}I(|u|\le \Delta),\forall u\in \mathbb{R}$。如果还有 $X_i=\frac{i}{n}$，$h=h_n$ s.t. $h_n\to 0, nh_n\to \infty$。
 
 我们还可以研究 $L^{\infty}$-risk of $\hat{f_n}$ ：$\mathbb{E}_f[||\hat{f_n}-f||_{L^\infty}^2]$ 的收敛速度。
 
-**定理（$L^{\infty}$-risk 一致收敛速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. Assume
-
-+ $h=h_n=\alpha(\frac{\log n}{n})^{\frac{1}{2\beta+1}}$。
-+ design points $X_1,\cdots,X_n$ are deterministic
-+ (LP1),(LP2),(LP3) holds
-+ $\xi_i$ are iid Gaussian $\mathcal{N}(0,\sigma^2_{\xi})$
-+ $K$ is a Lipschitz function. i.e. $K\in \Sigma(1,L_K)$。
+**定理（$L^{\infty}$-risk 一致收敛速率）**：$(f:[0,1]\to \mathbb{R})\in \Sigma(\beta,L)$（Holder class），$\hat{f_n}$ be the $LP(l)$ estimator for $f$ with $l=\lfloor \beta\rfloor$constructed from observations $(X_i,Y_i)$ s.t. $Y_i=f(X_i)+\xi_i$. 一些条件下
 
 Choose $\psi_n=(\frac{\log n}{n})^{\frac{\beta}{2\beta+1}}$ we have
 $$
