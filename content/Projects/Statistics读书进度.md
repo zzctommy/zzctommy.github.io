@@ -15,6 +15,8 @@ title: Statistics读书进度
 | 26.10.22    |30 | 28 |
 | 26.10.23    |30 | 33 |
 | 26.10.24    |46 | 36 |
+| 26.10.25-28    |在看论文、写作业|一点没看www|
+| 26.10.29    |61|36|
 
 ------
 
@@ -28,6 +30,12 @@ title: Statistics读书进度
 
 非参（无限维模型）统计的典例，例如从函数空间recover probabilistic density。
 
+三个例子：
+
++ 有一些取样 $X_1,\cdots,X_n$, recover density $p$.
++ 有一些数据 $Y_i=f(X_i)+\xi_i$，$\xi_i$ 是噪声，recover $f$。
++ SDE $dY(t)=f(t)dt+\frac{1}{\sqrt{n}}dW(t)$，recover $f$.
+
 ### 1.2
 
 引入Kernel density estimator $\hat{p_n}=\frac{1}{nh}\sum_i K((X_i-x)/h)$，function class用于限制bias，variance比较好控制，主要结果有：点态MSE $\sup\limits_{x_0\in \mathbb{R}}\sup\limits_{p\in \mathcal{P}(\beta,L)}\mathbb{E}_p[(\hat{p_n}(x_0)-p(x_0))^2]\le C n^{-2\beta/(2\beta+1)}$ 。
@@ -38,7 +46,7 @@ title: Statistics读书进度
 
 ### 1.4
 
-cross-validation首次出现（看了因果推断才懂，不过这里只是构造estimator而不是减少过拟合问题）。目标是寻找恰当的h给出好的kernel estimator。因为 MISE(h)依赖未知density p，这一节给出完全依赖data的unbiased estimator CV(h) of $MISE(h)-\int_\mathbb{R}p^2(x)dx$，所以问题变成最小化CV(h)：
+Find optimal $h$ for kernel estimator. cross-validation首次出现（看了因果推断才懂，不过这里只是构造estimator而不是减少过拟合问题）。目标是寻找恰当的h给出好的kernel estimator。因为 MISE(h)依赖未知density p，这一节给出完全依赖data的unbiased estimator CV(h) of $MISE(h)-\int_\mathbb{R}p^2(x)dx$，所以问题变成最小化CV(h)：
 $$
 CV(h)=\int \hat{p_h}(x)^2dx-\sum_{i=1}^n\frac{2}{n}\hat{p}_{h,-i}(X_i)
 $$
@@ -100,6 +108,42 @@ $$
 \limsup_{n\to\infty} \sup_{f\in \Sigma(\beta,L)}\mathbb{E}_f[\psi_n^{-2}||\hat{f_n}(x_0)-f(x_0)||_{L^\infty}^2]\le C<\infty
 $$
 
+### 1.7
+
+For nonparametric regression model $Y_i=f(X_i)+\xi_i$, $X_i$ 在 $[0,1]$ 均布（否则estimate很差），取 $L^2([0,1])$ 的 ONB $\{\varphi_j\}$ 并计算傅里叶系数 $\theta_j=\int_0^1 f\varphi_j$，得到 $\hat{\theta}_j=\frac{1}{n}\sum_{i=1}^n Y_i\varphi_j(X_i)$，定义projection estimator $\hat{f}_{nN}=\sum_{j=1}^N \hat{\theta}_j \varphi_j(x)$ （估计前 $N$ 项Fourier系数）
+
+For estimator of probability density：$X_1,\cdots,X_n$ iid of density $p$ supported on an interval $A\subseteq \mathbb{R}$, ONB $\{\varphi_j\}$ on $L^2(A)$. $c_j=\int p\varphi_j, \hat{c}_j=\frac{1}{n}\sum_{i=1}^n\varphi_j(X_i)$. Define $\hat{p}_{nN}(x)=\sum_{j=1}^N \hat{c}_j \varphi_j(x)$. 
+
+常用两个ONB：
+
++ 三角级数 $\varphi_1(x)=1,\varphi_{2k}(x)=\sqrt{2}\cos(2\pi kx), \varphi_{2k+1}(x)=\sqrt{2}\sin(2\pi kx), k\ge 1$. ONB for $L^2([0,1])$.
+
++ wavelet base : $\psi$ 有较好性质，可以证明 $\psi_{jk}=2^{j/2}\psi(2^j x-k),\quad (j,k\in \mathbb{Z})$ 是 $L^2(\mathbb{R})$ 的 ONB。
+
+常用函数类：
+
++ $W(\beta, L)=\{f:[0,1]\to\mathbb{R}\big|f^{(\beta-1)} A.C.,||f^{(\beta)}||_{L^2}\le L\}$.
++ $W^{per}(\beta,L)=\{f\in W(\beta,L):f^{(j)}(0)=f^{(j)}(1),j=0,1,\cdots,\beta-1 \}$.
++ Sobolev ellipsoid: $a_j:=\begin{cases}j^\beta, j\ even\\ (j-1)^\beta,j\ odd \end{cases}$, $\{\varphi_j\}$ trigonometric ONB. $\Theta(\beta,Q)=\{\theta\in l^2(\mathbb{N}):\sum_{j=1}^na_j^2\theta_j^2<\infty \}$. Then $W^{per}(\beta,L)\simeq\Theta(\beta,\frac{L^2}{\pi^{2\beta}})$ via $f=\sum \theta_j \varphi_j$.
++ $\tilde{W}(\beta,L)=\{f\in L^2([0,1]):\theta\in\Theta(\beta,Q=L^2/\pi^{2\beta}) \}$（$W^{per}$ 在 $\beta$ 不是整数时的推广）
+
+在特殊情况 $X_i=\frac{i}{n}$，三角ONB以及其他一些条件下，可以拿到 MISE的收敛速度：
+
+**定理** For  $N=\lfloor \alpha n^{\frac{1}{2\beta+1}}\rfloor, \beta\ge 1, L>0$, the projection estimator $\hat{f}_{nN}$ satisfies
+$$
+\limsup_{n\to \infty}\sup_{f\in \tilde{W}(\beta,L)} \mathbb{E}_f[n^{\frac{2\beta}{2\beta+1}}||\hat{f}_{nN}-f||_{L^2}^2]\le C=C(\beta,L,\alpha)
+$$
+三个Generalization：
+
++ least square estimator. $\hat{\theta}^{LS}=\arg\min_{\theta\in\mathbb{R}^N}\sum_{i=1}^N(Y_i-\theta^T\varphi(X_i))^2$ where $\varphi=(\varphi_1,\cdots,\varphi_N)$ be ONB. 在上面讨论的情况下这是 $\hat{f_{nN}}$ 的另一种表述。这个线性回归在比较好的情况下可以计算正规方程求解。
++ weighted projection estimator. $\hat{\theta_j}=\frac{1}{n}\sum_{i=1}^n Y_i\varphi_j(X_i)$ and $f_{n,\lambda}(x)=\sum_{j=1}^\infty \lambda_j\hat{\theta}_j\varphi_j(x)$. 之前的 $\hat{f}_{nN}$ 就是 $\lambda_j=I(j\le N)$ 的结果。取更好的 $\lambda$ 会给出更好的MISE收敛。
++ penalized least square estimator. A popular estimator is Tikhonov regularization estimator. $\hat{\theta}^{TR}=\arg\min_{\theta\in\mathbb{R}^N}\{\sum_{i=1}^N(Y_i-\theta^T\varphi(X_i))^2+\sum_{j=1}^N b_j\theta_j^2\}$. Lasso estimator $\hat{\theta}^{TR}=\arg\min_{\theta\in\mathbb{R}^N}\{\sum_{i=1}^N(Y_i-\theta^T\varphi(X_i))^2+\sum_{j=1}^N b_j|\theta_j|\}$
+
+Lasso的好处多多，例如数值复杂度只有 $O(Nn)$，例如可以把某些权重学习成 $0$.
+
+### 1.8
+
+一般的oracle定义。暂时没用，不抄了。
 
 
 
