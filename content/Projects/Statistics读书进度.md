@@ -89,7 +89,7 @@ $$
 \limsup_{n\to\infty} \sup_{f\in \Sigma(\beta,L)}\sup_{x_0\in [0,1]}\mathbb{E}_f[\psi_n^{-2}|\hat{f_n}(x_0)-f(x_0)|^2]\le C<\infty\\
 \limsup_{n\to\infty} \sup_{f\in \Sigma(\beta,L)}\mathbb{E}_f[\psi_n^{-2}||\hat{f_n}(x_0)-f(x_0)||_{L^2}^2]\le C<\infty
 $$
-在 fixed design $X_i=\frac{i}{n}$ 时条件可以有简单刻画： $\exist K_{min}>0,\Delta>0$ s.t. $K(u)\ge K_{min}I(|u|\le \Delta),\forall u\in \mathbb{R}$。如果还有 $X_i=\frac{i}{n}$，$h=h_n$ s.t. $h_n\to 0, nh_n\to \infty$。
+在 fixed design $X_i=\frac{i}{n}$ 时条件可以有简单刻画，只需要 $K$ 满足一些容易的条件。
 
 我们还可以研究 $L^{\infty}$-risk of $\hat{f_n}$ ：$\mathbb{E}_f[||\hat{f_n}-f||_{L^\infty}^2]$ 的收敛速度。
 
