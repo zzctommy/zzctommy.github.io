@@ -16,7 +16,8 @@ title: Statistics读书进度
 | 26.10.23    |30 | 33 |
 | 26.10.24    |46 | 36 |
 | 26.10.25-28    |在看论文、写作业|一点没看www|
-| 26.10.29    |61|36|
+| 26.10.29    |61 | 36 |
+| 26.10.24    |76 | 36 |
 
 ------
 
@@ -144,6 +145,28 @@ Lasso的好处多多，例如数值复杂度只有 $O(Nn)$，例如可以把某�
 ### 1.8
 
 一般的oracle定义。暂时没用，不抄了。
+
+### 1.9
+
+Consider regression model $Y_i=f(X_i)+\xi_i, X_i\in[0,1],\mathbb{E}[\xi_i]=0$.
+
+$\{f_{\tau}:\tau\in \mathcal{T} \}$ be a family of estimator based only on sample $\{(X_i,Y_i)\}$ and $\tau$.
+
+discretized MISE $r_{n,\tau}^D(f)=\mathbb{E}_f[||f_{\tau}-f||_{2,n}^2]$ where $||f_\tau-f||_{2,n}=(\frac{1}{n}\sum_{i=1}^n (f_{\tau}(X_i)-f(X_i))^2)^{1/2}$.
+
+minimizing $r_{n,\tau}^D(f)$ is equivalent to minimizing $J(\tau)=\mathbb{E}_{f}[||f_{\tau}||_{2,n}^2-\frac{2}{n}\sum_{i=1}^n f_{\tau}(X_i)f(X_i)]$.
+
+We find an unbiased estimator $\hat{J}(\tau)=||f_{\tau}||_{2,n}^2-\frac{2}{n}\sum_{i=1}^n Y_i f_{\tau}(X_i)+\text{residual of }\xi$.
+
+minimizing $\hat{J}(\tau)$ to give $\hat{\tau}$, equivalently to minimize $C_p(\tau)=\frac{1}{n}\sum_{i=1}^n (Y_i-f_{\tau}(X_i))^2+\text{residual}$
+
+In the end consider the cross-validation technique. $CV_*(\tau)=\frac{1}{n}\sum_{i=1}^n (Y_i-f_{\tau,-i}(X_i))^2$.
+
+$CV_*$ may not be unbiased, but still have good properties, can choose nearly optimal parameter.
+
+### 1.10
+
+非参回归、Gaussian white noise model, Gaussian sequence model 之间的相互转化。没有严格的推导，感觉和因果推断关系也不大，略看了。
 
 
 
