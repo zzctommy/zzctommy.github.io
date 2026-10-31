@@ -7,17 +7,18 @@ title: Statistics读书进度
 起到一个鞭策自己看书的作用，每天读一点记下来也许有成就感。
 
 
-| Date        | Nonparametric Regression(190) | Casual Inferene(118) |
+| Date        | Nonparametric Regression | Casual Inferene |
 | ----------- | ----------- | --------------|
-| ?-26.10.19  |15 | 2 |
-| 26.10.20    |19 | 12 |
-| 26.10.21    |30 | 18 |
-| 26.10.22    |30 | 28 |
-| 26.10.23    |30 | 33 |
-| 26.10.24    |46 | 36 |
+| ?-26.10.19  |1.1；1.2 | none |
+| 26.10.20    |1.3 | Lec1            |
+| 26.10.21    | 1.4                      | Lec2 |
+| 26.10.22    |none | Lec3 |
+| 26.10.23    |none | part of Lec4 |
+| 26.10.24    |1.5，1.6 | rest of Lec4 |
 | 26.10.25-28    |在看论文、写作业|一点没看www|
-| 26.10.29    |61 | 36 |
-| 26.10.24    |76 | 36 |
+| 26.10.29    |1.7 | none |
+| 26.10.30   |1.8，1.9，1.10 | none |
+| 26.10.30   |none | Lec9 |
 
 ------
 
@@ -305,4 +306,36 @@ Now we can say something on "treatment heterogeneity"
    + $\hat{\beta}$ 显著大于 $0$ ：$\hat{\tau}$ 含真实信号，不是“pure noise”
    + $0<\hat{\beta}<1$：$\hat{\tau}$ 需要缩小，训练得到的模型高估了差异
    + $\hat{\beta}>1$：$\hat{\tau}$ 需要放大，训练得到的模型低估了差异
+
+### Lec9
+
+主要讨论了如何处理panel（面状）数据的因果，i.e. data包含 $n$ 个个体，$T$ 个时间段，observe $Y_{it}\in\mathbb{R},i=1,\cdots,n,t=1,\cdots,T$ and treat assignment $W_{it}\in\{0,1\}$.
+
+本节主要考虑简单模型 $Y_{it}=Y_{it}(0)+W_{it}\tau, \forall i,t$.
+
+局限性包括：(1)没有考虑治疗异质；(2)无法处理跨时间的治疗影响。
+
+**two-way model** $Y_{it}=\alpha_i+\beta_t+W_{it}\tau+\epsilon_{it}, \mathbb{E}[\epsilon|\alpha,\beta,W]=0$.
+
+模型在 $T=2$ 的时候是非常好的，一般情况对 $\alpha_i,\beta_i,\tau$ run OLS.
+
+note1：我们需要在控制组内（以及处理组内）$Y$ 随时间变化的趋势几乎平行的时候用这个model。因为个体差异由 $\alpha$ 控制，应当只差常数。
+
+note2：$\epsilon_{it}$ 应当建模为，至少在相同的 $i$ 不同的 $t$ 时可以有dependence。例如 $\epsilon_{i.}$ iid, $Var[\epsilon_{i.}]=\Sigma$. 但有研究指出哪怕这样也有一些与现实不符的因果推论。
+
+**Interactive panel model** $Y_{it}=A_{i.}B_{t.}^T+W_{it}\tau+\epsilon_{it}, \mathbb{E}[\epsilon|A,B,W]=0,A\in\mathbb{R}^{n\times k},B\in\mathbb{R}^{k\times n}$. 此时不止对parallel trend有效了！
+
+主要考虑的case：panel只有右下角被treat，也就是 $W_{it}=I(i\ge n_0,t\ge T_0)$.
+
+方法是寻找权重 $\gamma_i\ge 0,\sum_i \gamma_i=1$ s.t. $\sum_{i=1}^{n_0}\gamma_i Y_{it}\approx\alpha+\frac{1}{n-n_0}\sum_{i>n_0}Y_{it}$.
+
+动机：未处理时对照组和处理组的个体差异随时间平行，假设处理处理组时，如果不处理仍然差 $\alpha$ （注意没法观测不处理，只能假设），那么outcome的变化反映的就是 $\tau$ 的变化。
+
+**a designed-based method** 假设某个条件：condition on an observation，每个unit受treat的概率独立
+
+一个简单的此类条件：$Y_{i.}(0)\perp W_{i.}|S_i,\qquad S_i=\sum_{t=1}^T W_{it}$. i.e. 按治疗次数分组后，治疗的assign是独立的。
+
+直接考虑 linear estimator的性质：$\hat{\tau}=\sum_{i,t}\gamma_{i,t}Y_{it}$ then $\mathbb{E}[\hat{\tau}|W,\gamma]=\sum_{i,t}\gamma_{it}\mathbb{E}[Y_{it}(0)|S_i]+\tau\sum_{i,t}\gamma_{it}W_{it}$，不过书上这个推导在数学上是不成立的，但是感觉差的条件不太强，可以接受。
+
+$\hat{\tau}$ unbiased只需要  $\sum_{i,t}\gamma_{it}W_{it}=1,\sum_{S_i=s}\gamma_{it}=0,\forall s,t$.
 
