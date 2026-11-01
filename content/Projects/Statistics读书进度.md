@@ -18,7 +18,8 @@ title: Statistics读书进度
 | 26.10.25-28    |在看论文、写作业|一点没看www|
 | 26.10.29    |1.7 | none |
 | 26.10.30   |1.8，1.9，1.10 | none |
-| 26.10.30   |none | Lec9 |
+| 26.10.31   |none | Lec8 |
+| 26.11.01   |none | Lec9 |
 
 ------
 
@@ -307,7 +308,7 @@ Now we can say something on "treatment heterogeneity"
    + $0<\hat{\beta}<1$：$\hat{\tau}$ 需要缩小，训练得到的模型高估了差异
    + $\hat{\beta}>1$：$\hat{\tau}$ 需要放大，训练得到的模型低估了差异
 
-### Lec9
+### Lec8
 
 主要讨论了如何处理panel（面状）数据的因果，i.e. data包含 $n$ 个个体，$T$ 个时间段，observe $Y_{it}\in\mathbb{R},i=1,\cdots,n,t=1,\cdots,T$ and treat assignment $W_{it}\in\{0,1\}$.
 
@@ -339,3 +340,56 @@ note2：$\epsilon_{it}$ 应当建模为，至少在相同的 $i$ 不同的 $t$ �
 
 $\hat{\tau}$ unbiased只需要  $\sum_{i,t}\gamma_{it}W_{it}=1,\sum_{S_i=s}\gamma_{it}=0,\forall s,t$.
 
+### Lec9
+
+Motivation: 研究价格对需求的影响。当天实际形成的价格 $W_i$ 对应treatment，$Y_i(w)$ 为假想的价格为 $w$ 的时候的需求量对应potential outcome，$Y_i(W_i)$ 为实际需求量对应observed data。如果这个时候加入unconfoundedness条件，意为 $\{Y_i(w)\}_w\perp W_i$，也就是潜在需求与实际价格无关。但是这显然是错误的假设，二者几乎必然相互影响，一般逻辑链是需求↑价格↑。
+
+首先考虑一个**简单模型**：$Y_i(w)=Y_i(0)+\tau w$. 
+
+Rewrite as $Y_i=\alpha+W_i\tau+\epsilon_i$，其中 $\alpha=\mathbb{E}[Y_i(0)],\epsilon_i=Y_i(i)-\mathbb{E}[Y_i(0)]$ 表示每个unit处理结果比平均值高多少。由于不假设unconf. 一般有 $\mathbb{E}[\epsilon_i|W_i]\not=0$，也就是不排除处理结果好的人受到更多treat（注意等于 $0$ 并不保证unconf）。这时候unconf时的处理技巧：run OLS会失效。
+
+但是我们可以通过引入一些instrument来解决这个问题。instrument $Z_i$ 与 $W_i$ 有关但是与 $\epsilon_i$ 独立。
+
+例如，直观上：$W_i$: price of fish, $Y_i:$ demand, $Z_i:$ weather condition/鱼存储量/鱼进口量，$Z_i$ 影响 $Y_i$ 的方式只通过 $W_i$，因而与 $\epsilon_i$ 无关。那么 $Z_i$ 就是一个instrument。
+
+如果我们有一个instrument那么就可以识别 $\tau$：$\tau=Cov(Y_i,Z_i)/Cov(W_i,Z_i)$, $\hat{\tau}=\hat{Cov}(Y_i,Z_i)/\hat{Cov}(W_i,Z_i)$.
+
+数学上对 instrument $Z_i$ 的基本要求至少有三条：
+
++ exogenous：$Z_i\perp \epsilon_i$
++ relavent：$Cov(W_i,Z_i)\not=0$
++ exclusion restriction：Any effect of $Z_i$ on $Y_i$ must be mediated wia $W_i$.
+
+实操中我们往往有很多instrument，例如上面就给了好几个。我们**一般化模型**：
+$$
+Y_i=\tau W_i+\epsilon_i, \quad\epsilon_i\perp Z_i, Y_i,W_i\in \mathbb{R},Z_i\in\mathcal{Z}
+$$
+where $\mathcal{Z}$ may be a high-dim space.
+
+Given any function $w:\mathcal{Z}\to\mathbb{R}$ we can identify $\tau$ via $\tau=Cov(Y_i,w(Z_i))/Cov(W_i,w(Z_i))$ Also we have an estimator
+$$
+\hat{\tau}_w=\frac{\hat{Cov}(Y_i,w(Z_i))}{\hat{Cov}(W_i,w(Z_i))}=\frac{\frac{1}{n}\sum_{i=1}^n(Y_i-\bar{Y})(w(Z_i)-\bar{w(Z)})}{\frac{1}{n}\sum_{i=1}^n(W_i-\bar{W})(w(Z_i)-\bar{w(Z)})}
+$$
+To minimize this estimator's asymptotic variance we find the optimal $w(z)=w^*(z)=\mathbb{E}[W_i|Z_i=z]$.
+
+Strategy for find a nearly optimal $w$:
+
+Non-parametric regression to find $\hat{w}(\cdot)$ of $\mathbb{E}[Y_i|Z_i=z]$ then get $\hat{\tau}=\hat{\tau}_{\hat{w}}$.
+
+不足之处在于如果instrument非常弱，那么过拟合可能导致 $\hat{w}(Z_i)\perp \epsilon_i$ 并不成立，这时候使用 K-fold cross-fitting可以解决，$\hat{\tau}=\hat{Cov}(Y_i,\hat{w}^{(-k(i))}(Z_i))/\hat{Cov}(W_i,\hat{w}^{-(k(i))}(Z_i))$，这样子就有 $\hat{w}^{(-k(i))}(Z_i)\perp \epsilon_i$.
+
+更进一步我们还可以**推广模型为**
+$$
+Y_i=g(W_i)+\epsilon_i\quad Z_i\perp\epsilon_i,Y_i,W_i\in\mathbb{R},Z_i\in\mathcal{Z}
+$$
+那么 $\mathbb{E}[Y_i|Z_i=z]=\int_{\mathbb{R}}g(w)f(w|z)dw$, where $f(w|z)$: conditional density of $W_i|Z_i$.
+
+Strategy for find $\hat{g}$:
+
+First learn $\hat{f}(w|z)$ for $f(w|z)$ non-parametrically, then suitably choose a function class $\mathcal{G}$
+$$
+\hat{g}(\cdot)=\arg\min_{g\in\mathcal{G}}\{\frac{1}{n}\sum_{i=1}^n(Y_i-\int_\mathbb{R} g(w)\hat{f}^{(-k(i))(w|Z_i)}dw)^2  \}
+$$
+This process can be achieved by projection estimators: $g_K(w)=\sum_{k=1}^K\beta_k\psi_k(w)$ where $\psi_k$ are basis. 此时问题变成线性回归。
+
+作者指出，一般形况下积分方程 $\mathbb{E}[Y_i|Z_i=z]=\int_{\mathbb{R}}g(w)f(w|z)dw$ 的反问题是困难的，所以可以预期到需要加比较强的正规性条件才能解，而且收敛速度并不快。
