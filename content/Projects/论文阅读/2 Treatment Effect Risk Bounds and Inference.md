@@ -25,7 +25,7 @@ $\newcommand{\E}{\mathbb{E}}$
 
 ### 2 PROBLEM SET UP AND DEFINITIONS
 
-potential outcome $Y^*(0),Y^*(1)\in\mathbb{R}$, covariates $X\in\chi$.
+potential outcome $Y^*(0),Y^*(1)\in\mathbb{R}$, covariates $X\in\mathcal{X}$.
 
 ITE(individual treatment effect) $\delta=Y^*(1)-Y^*(0)$.
 
