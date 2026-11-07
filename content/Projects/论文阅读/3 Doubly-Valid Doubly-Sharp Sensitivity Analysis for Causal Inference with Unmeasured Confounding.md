@@ -243,8 +243,8 @@ Condition2：$||\hat{Q}_{\pm}||_q=O_p(1),||\hat{\rho}_{\pm}||_q=O_p(1)$, $\mathb
 
 **Theorem1** (double sharpness and double validity) Assume condition1,2.
 
-+ Suppose $||\hat{Q}_+-Q_+||_2\or||\hat{Q}_--Q_-||_2=o_P(1)$, so that quantiles are estimated consistently. Then the DVDS estimators $(\hat{\psi}_{ATE}^-,\hat{\psi}_{ATE}^+)$ converge to the sharp ATE bounds in probability if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\or||\hat{\rho}_--\rho_-||_2=o_P(1)$.
-+ Supppose $||\hat{Q}_+-Q_+||_2\or||\hat{Q}_--Q_-||_2\not=o_P(1)$, so  that quantile models are mis-specified. Then $\hat{\psi}_{ATE}^+\ge\psi_{ATE}^+-o_P(1)$ and $\hat{\psi}_{ATE}^-\le\psi_{ATE}^-+o_P(1)$ if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\or||\hat{\rho}_--\rho_-||_2=o_P(1)$.
++ Suppose $||\hat{Q}_+-Q_+||_2\lor||\hat{Q}_--Q_-||_2=o_P(1)$, so that quantiles are estimated consistently. Then the DVDS estimators $(\hat{\psi}_{ATE}^-,\hat{\psi}_{ATE}^+)$ converge to the sharp ATE bounds in probability if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\lor||\hat{\rho}_--\rho_-||_2=o_P(1)$.
++ Supppose $||\hat{Q}_+-Q_+||_2\lor||\hat{Q}_--Q_-||_2\not=o_P(1)$, so  that quantile models are mis-specified. Then $\hat{\psi}_{ATE}^+\ge\psi_{ATE}^+-o_P(1)$ and $\hat{\psi}_{ATE}^-\le\psi_{ATE}^-+o_P(1)$ if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\lor||\hat{\rho}_--\rho_-||_2=o_P(1)$.
 
 
 
