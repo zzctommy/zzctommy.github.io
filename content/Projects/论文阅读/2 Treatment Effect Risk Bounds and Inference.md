@@ -13,6 +13,10 @@ $\newcommand{\E}{\mathbb{E}}$
 
 [论文地址](https://arxiv.org/abs/2201.05893)
 
+作者：  Nathan Kallus  (Netflix and Cornell University)
+
+发表： “Treatment Effect Risk: Bounds and Inference,” *Management Science*, 69(8), 4579–4590 (2023)
+
 ---
 
 ### 1 Introduction
