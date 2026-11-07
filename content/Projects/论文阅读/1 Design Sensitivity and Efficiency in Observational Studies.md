@@ -1,5 +1,5 @@
 ---
-title: Design Sensitivity and Efficiency in Observational Studies
+title: 1 Design Sensitivity and Efficiency in Observational Studies
 date: 2026-10-25
 ---
 

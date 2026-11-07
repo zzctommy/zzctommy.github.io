@@ -1,6 +1,6 @@
 ---
 date: 2026-11-07
-title: Doubly-Valid Doubly-Sharp Sensitivity Analysis for Causal Inference with Unmeasured Confounding
+title: 3 Doubly-Valid Doubly-Sharp Sensitivity Analysis for Causal Inference with Unmeasured Confounding
 ---
 
 [论文地址](https://doi.org/10.1080/01621459.2024.2335588) published on JASA 2025
