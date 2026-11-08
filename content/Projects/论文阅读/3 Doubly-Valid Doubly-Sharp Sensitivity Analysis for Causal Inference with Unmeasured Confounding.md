@@ -237,39 +237,65 @@ For brevity, we only state results for the ATE bounds $(\hat{\psi}_{ATE}^-,\hat{
 
 #### 5.1. Sharpness and Validity
 
-Condition1：outcome $Y$ has $q>2$ finite moments. For some $\epsilon>0$, $\mathbb{P}[\epsilon<e(X)<1-\epsilon]=1$.
+**Condition1**: outcome $Y$ has $q>2$ finite moments. For some $\epsilon>0$, $\mathbb{P}[\epsilon<e(X)<1-\epsilon]=1$.
 
-Condition2：$||\hat{Q}_{\pm}||_q=O_p(1),||\hat{\rho}_{\pm}||_q=O_p(1)$, $\mathbb{P}[\epsilon<\inf_x\hat{e}(x),\sup_x\hat{e}(x)<1-\epsilon]\to1$.
+**Condition2**: $||\hat{Q}_{\pm}||_q=O_p(1),||\hat{\rho}_{\pm}||_q=O_p(1)$, $\mathbb{P}[\epsilon<\inf_x\hat{e}(x),\sup_x\hat{e}(x)<1-\epsilon]\to1$.
 
 **Theorem1** (double sharpness and double validity) Assume condition1,2.
 
 + Suppose $||\hat{Q}_+-Q_+||_2\lor||\hat{Q}_--Q_-||_2=o_P(1)$, so that quantiles are estimated consistently. Then the DVDS estimators $(\hat{\psi}_{ATE}^-,\hat{\psi}_{ATE}^+)$ converge to the sharp ATE bounds in probability if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\lor||\hat{\rho}_--\rho_-||_2=o_P(1)$.
 + Supppose $||\hat{Q}_+-Q_+||_2\lor||\hat{Q}_--Q_-||_2\not=o_P(1)$, so  that quantile models are mis-specified. Then $\hat{\psi}_{ATE}^+\ge\psi_{ATE}^+-o_P(1)$ and $\hat{\psi}_{ATE}^-\le\psi_{ATE}^-+o_P(1)$ if either $||\hat{e}-e||_2=o_P(1)$ or $||\hat{\rho}_+-\rho_+||_2\lor||\hat{\rho}_--\rho_-||_2=o_P(1)$.
 
+#### 5.2. Asymptotic Normality and Efficiency
+
+**Condition3**: One of the following holds.
+
++ continuous case: For each $(x,z)$, $F(y|x,z)$ is continuous with a uniformly bounded density $f(y|x,z)$ that is positive near $\tau$ and $1-\tau$ quantiles.
++ binary case: $Y$ is binary and the regression function $\mu(X,Z)$ has bounded density.
+
+**Theorem2** (Asymptotic normality and semiparametric efficiency) Assume Condition1-3 and at
+
++ continuous case: $||\hat{Q}_+-Q_+||_2=o_P(n^{-1/4})$ and $||\hat{e}-e||_2\times||\hat{\rho}_{\pm}-\rho_{\pm}||_2=o_P(n^{-1/2})$.
++ binary case: $||\hat{\mu}-\mu||_{\infty}=o_P(n^{-1/4})$ and $||\hat{e}-e||_2\times||\hat{\mu}-\mu||=o_P(n^{-1/2})$.
+
+Then the DVDS estimators are $\sqrt{n}$ - consistent, asymptotically normal and semiparametrically efficient.
+$$
+\sqrt{n}\begin{pmatrix}\hat{\psi}_{ATE}^--\psi_{ATE}^-\\ \hat{\psi}_{ATE}^+-\psi_{ATE}^+ \end{pmatrix}=\frac{1}{\sqrt{n}}\sum_{i=1}^n \begin{pmatrix}\phi_{ATE}^-(X_i,Y_i,Z_i;\eta)-\psi_{ATE}^-\\ \phi_{ATE}^+(X_i,Y_i,Z_i;\eta)-\psi_{ATE}^+ \end{pmatrix}+o_P(1)\overset{d}{\to} N(0,\Sigma)
+$$
+
+### 6. Theory for Inference on Bounds
+
+standard error
+$$
+\hat\sigma_\pm^2
+=
+\frac1{n(n-1)}
+\sum_{k=1}^K\sum_{i\in F_k}
+\left[
+\phi^\pm_{\mathrm{ATE}}(X_i,Y_i,Z_i;\hat\eta^{(k)})
+-\hat\psi^\pm_{\mathrm{ATE}}
+\right]^2
+$$
+**Theorem3** Assume the conditions of theorem2. Then $\mathbb{P}[\psi_{ATE}^+\le\hat{\psi}_{ATE}^++z_{1-\alpha}\hat{\sigma}_+]\to1-\alpha$. Moreover, for testing the null hypothesis $\hat{\psi}_+\le 0$ at level $\alpha$, the test is asymptotically most powerful.
 
 
 
 
 
+**Theorem4** Assume condition 1-3 and the following:
 
++ continuous case: $||\hat{e}-e||_2\times ||\rho_{\pm}-\varrho(\cdot,\cdot;\hat{Q}_{\pm})||_2=o_P(n^{-1/2})$, and $\hat{Q}_{\pm}$ tends to a possibly mis-specified limit $\bar{Q}_{\pm}$.
++ binary case: $||\hat{e}-e||_2\times||\hat{\mu}-\mu||_2=o_P(n^{-1/2})$.
 
+Then $\mathbb{P}[\psi_{ATE}^+\le\hat{\psi}_{ATE}^++z_{1-\alpha}\hat{\sigma}_+]\ge1-\alpha-o(1)$ for $\forall \alpha\in(0,1)$.
+
+*"We consider this to be the most surprising finding of this article."*
+
+尽管estimator未必渐进正态，但是正态分位数仍然适用，这是因为与渐进正态的oracle相比，这个估计只会更保守。
 
 ### My questions
 
 + 如何陈述双鲁棒性，该加什么条件得到什么结论。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
++ 我没有看任何有关双鲁棒性的证明。感觉这个才是文章的核心，但是我未必用得到。
 
 
