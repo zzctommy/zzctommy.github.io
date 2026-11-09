@@ -92,7 +92,7 @@ $$
 $$
 作者的办法很复杂，用到一些Sion minimax theorem和凸优化，没读。
 
-如果只要得到下界，一步Cauchy-Schwarz就可以做到，但是没法推出这个界是精确的。
+如果只要得到下界，一步Cauchy-Schwarz就可以做到，ai指出构造两点分布就可以取等。
 
 Corollary3.5 
 $$
