@@ -90,7 +90,7 @@ $$
 \frac{e_+(x,y)}{1-e_+(x,y)}/\frac{e(x)}{1-e(x)}=\begin{cases}\Lambda^{-1}, y>Q_+(x,1)\\
 \gamma(x,y), y=Q_+(x,1)\\ \Lambda, y<Q_+(x,1) \end{cases}
 $$
-where $\gamma$ can be chosen s.t.  $\mathbb{E}[\frac{Z}{e_+(x,y)}|Z]=1$. Then $\psi_1^+=\mathbb{E}[YZ/e_+(X,Y)]$.
+where $\gamma$ can be chosen s.t.  $\mathbb{E}[\frac{Z}{e_+(x,y)}|X]=1$. Then $\psi_1^+=\mathbb{E}[YZ/e_+(X,Y)]$.
 
 证明：作者引用了别人的结果。
 
@@ -117,7 +117,7 @@ $$
 $$
 \mathbb{E}_{P_{full}}[Y(1)|X,Z=0]=\int y dF_{full}(y|x,0)
 $$
-由 MSM以及一些恒等变形 $\Lambda^{-1}\le\frac{dF_{full}(y|x,0)}{dF(y|x,1)}\le\Lambda$.
+由 MSM以及一些简单恒等变形 $\Lambda^{-1}\le\frac{dF_{full}(y|x,0)}{dF(y|x,1)}\le\Lambda$（本质是把 $Y(0)$ 平均掉了，仍然有MSM的界）
 
 现在问题变成，给已知分布 $dF(y|x,1)$，乘以一个取值在 $[\Lambda^{-1},\Lambda]$ 之内的倍率函数，使得总概率仍为 $1$。如何分配使得均值最大。
 
@@ -142,13 +142,13 @@ $$
 $$
 于是实操上，先估计quantile $\hat{Q}_+$ 再跑回归得到  $\rho^+$ 的估计。
 $$
-\Lambda^{-1}Y_i+(1-\Lambda^{-1})(\hat{Q}_{+}(X_i,Z_i)+\frac{1}{1-\tau}(Y_i-Q_+(X_i,Z_i))_+)\sim(X_i,Z_i)
+\Lambda^{-1}Y_i+(1-\Lambda^{-1})(\hat{Q}_{+}(X_i,Z_i)+\frac{1}{1-\tau}(Y_i-\hat{Q}_+(X_i,Z_i))_+)\sim(X_i,Z_i)
 $$
 **Proposition4** For any integrable $\hat{Q}_+(x,z)$, define
 $$
 \varrho_+(x,z;\hat{Q}_+)=\int\left(\Lambda^{-1}y+(-\Lambda^{-1})(\hat{Q}_{+}(x,z)+\frac{1}{1-\tau}(y-\hat{Q}_+(x,z))_+)\right)dF(y|x,z)
 $$
-then $\psi_1^+\le\mathbb{E}[ZY+(1-Z)\varrho^+(x,1;\hat{Q}_+)]$.
+then $\psi_1^+\le\mathbb{E}[ZY+(1-Z)\varrho_+(x,1;\hat{Q}_+)]$.
 
 我感觉这个和prop3说的几乎是同一件事，$Q_+$ 都是minimizer了这两个命题不是显然等价吗，。
 
@@ -199,11 +199,11 @@ $$
 $$
 \tilde{Y}=\Lambda^{-1}Y+(1-\Lambda^{-1})(\hat{Q}_{+}(X,1)+\frac{1}{1-\tau}(Y-Q_+(X,1))_+)
 $$
-recall常规AIPW:  $\mathbb{E}_X[\mathbb{E}[Y|X,Z=1]]\leftrightarrow \hat{\mu}(X,1)+\frac{Z}{\hat{e}(X)}(Y-\hat{\mu}(X,1))$, $\mu(X,1)=\mathbb{E}[Y|X,Z=1]$.
+recall常规AIPW:  $\mathbb{E}_X[\mathbb{E}[Y|X,Z=1]]\leftrightarrow \hat{\mu}(X,1)+\frac{Z}{\hat{e}(X)}(Y-\hat{\mu}(X,1))$, $\mu(X,1)=\mathbb{E}[Y|X,Z=1]$，关于 $\hat{e},\hat{\mu}$ 双鲁棒。
 
 Note $\mathbb{E}[\tilde{Y}|X,Z=1]=\varrho_+(X,1;\hat{Q}_+)$.
 
-So $\mathbb{E}_X[\varrho_+(X,1;\hat{Q}_+)]\leftrightarrow \hat{\rho}_+(X,1)+\frac{Z}{\hat{e}(X)}(\tilde{Y}-\hat{\rho}_+(X,1))$
+So $\mathbb{E}_X[\varrho_+(X,1;\hat{Q}_+)]\leftrightarrow \hat{\rho}_+(X,1)+\frac{Z}{\hat{e}(X)}(\tilde{Y}-\hat{\rho}_+(X,1))$.
 
 现在尝试估计 $\mathbb{E}[ZY+(1-Z)\varrho_{+}(X,1;\hat{Q}_+)]$.
 
@@ -211,7 +211,7 @@ So $\mathbb{E}_X[\varrho_+(X,1;\hat{Q}_+)]\leftrightarrow \hat{\rho}_+(X,1)+\fra
 
 所以等价于估计 $\mathbb{E}[Z(Y-\tilde{Y})+\varrho_+(X,1;\hat{Q}_+)]$，第一项直接取样本平均，第二项用AIPW。
 
-整理：
+整理（省略下标）：
 $$
 ZY-Z\tilde{Y}+\hat{\rho}_++\frac{Z}{\hat{e}}(\tilde Y-\hat{\rho}_+)\\
 =ZY+(1-Z)\hat{\rho}_++\frac{(1-\hat{e})Z}{\hat{e}}(\tilde{Y}-\hat{\rho}_+)
